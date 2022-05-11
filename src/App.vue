@@ -2,9 +2,9 @@
   <div>
     <nav class="navbar navbar-dark bg-primary">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <router-link to="/" class="navbar-brand">
           <img id="incart-nav-logo" src="./assets/logo.png" class="d-inline-block align-text-top" alt="logo" />
-        </a>
+        </router-link>
       </div>
     </nav>
     <div id="page-content" class="container">
