@@ -1,6 +1,8 @@
 import { createStore } from 'vuex'
+import authentication from './modules/authentication'
+import toast from './modules/toast'
 
-export default createStore({
+const store = createStore({
   state: {
   },
   getters: {
@@ -10,5 +12,9 @@ export default createStore({
   actions: {
   },
   modules: {
+    authentication,
+    toast
   }
 })
+
+export default store

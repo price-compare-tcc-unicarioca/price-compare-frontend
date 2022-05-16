@@ -1,32 +1,74 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import store from '@/store'
 import HomeView from '../views/HomeView.vue'
-import LoginView from '../views/LoginView.vue'
+import SignInView from '../views/SignInView.vue'
 import SignUpView from '../views/SignUpView.vue'
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView,
-    beforeEnter: (to, from, next) => {
-      return next({ name: 'login' })
+    path: '/sign-in',
+    name: 'sign-in',
+    component: SignInView,
+    meta: {
+      requiresAuth: false
     }
   },
   {
-    path: '/login',
-    name: 'login',
-    component: LoginView
+    path: '/sign-up',
+    name: 'sign-up',
+    component: SignUpView,
+    meta: {
+      requiresAuth: false
+    }
   },
   {
-    path: '/signup',
-    name: 'signup',
-    component: SignUpView
+    path: '/',
+    name: 'home',
+    component: HomeView,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/company',
+    name: 'list-companies',
+    component: HomeView,
+    meta: {
+      requiresAuth: true
+    },
+    children: [
+      {
+        path: 'add',
+        name: 'add-company',
+        component: HomeView,
+        meta: {
+          requiresAuth: true
+        }
+      }
+    ]
+  },
+  {
+    path: '/import-sheet',
+    name: 'import-sheet',
+    component: HomeView,
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const { getters } = store
+  if (to.meta.requiresAuth && !getters['authentication/isAuthenticated']) {
+    next({ name: 'sign-in' })
+  } else {
+    next()
+  }
 })
 
 export default router
