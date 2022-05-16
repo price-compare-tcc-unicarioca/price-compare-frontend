@@ -18,7 +18,14 @@
           <li class="nav-item" v-if="isAuthenticated">
             <a class="nav-link" @click="signOut">
               <font-awesome-icon icon="right-from-bracket" />
+              Sign out
             </a>
+          </li>
+          <li class="nav-item" v-else>
+            <router-link to="sign-in" class="nav-link" active-class="active">
+              <font-awesome-icon icon="right-to-bracket" />
+              Sign in
+            </router-link>
           </li>
         </ul>
       </div>

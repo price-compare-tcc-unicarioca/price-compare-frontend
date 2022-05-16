@@ -1,12 +1,16 @@
 <template>
   <div class="home">
+    <ean-provider />
   </div>
 </template>
 
 <script>
+import EanProvider from '@/components/EanProvider.vue'
 
 export default {
-  name: 'HomeView',
+  components: {
+    EanProvider
+  },
   setup () {
   }
 }
