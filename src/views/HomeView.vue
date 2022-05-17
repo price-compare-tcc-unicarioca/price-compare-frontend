@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <ean-provider />
+    <ean-provider @search-requested="onSearchRequested" />
   </div>
 </template>
 
@@ -12,6 +12,13 @@ export default {
     EanProvider
   },
   setup () {
+    const onSearchRequested = (ean) => {
+      console.log(ean)
+    }
+
+    return {
+      onSearchRequested
+    }
   }
 }
 </script>

@@ -11,23 +11,15 @@
         <div class="navbar-nav">
           <router-link to="list-companies" class="nav-link" active-class="active" v-if="isAuthenticated">Supermercados</router-link>
           <router-link to="/import-sheet" class="nav-link" active-class="active" v-if="isAuthenticated">Importar planilha</router-link>
+          <a class="nav-link" v-if="isAuthenticated" @click="signOut">
+            <font-awesome-icon icon="right-from-bracket" />
+            Sign out
+          </a>
+          <router-link v-else to="sign-in" class="nav-link" active-class="active">
+            <font-awesome-icon icon="right-to-bracket" />
+            Sign in
+          </router-link>
         </div>
-      </div>
-      <div class="d-flex">
-        <ul class="navbar-nav">
-          <li class="nav-item" v-if="isAuthenticated">
-            <a class="nav-link" @click="signOut">
-              <font-awesome-icon icon="right-from-bracket" />
-              Sign out
-            </a>
-          </li>
-          <li class="nav-item" v-else>
-            <router-link to="sign-in" class="nav-link" active-class="active">
-              <font-awesome-icon icon="right-to-bracket" />
-              Sign in
-            </router-link>
-          </li>
-        </ul>
       </div>
     </div>
   </nav>
