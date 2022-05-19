@@ -999,6 +999,21 @@
   resolved "https://registry.yarnpkg.com/@fortawesome/vue-fontawesome/-/vue-fontawesome-3.0.0-5.tgz#6251e6917198362fa56510eb256cfb6aa6d30a32"
   integrity sha512-aNmBT4bOecrFsZTog1l6AJDQHPP3ocXV+WQ3Ogy8WZCqstB/ahfhH4CPu5i4N9Hw0MBKXqE+LX+NbUxcj8cVTw==
 
+"@googlemaps/js-api-loader@^1.12.11":
+  version "1.14.2"
+  resolved "https://registry.yarnpkg.com/@googlemaps/js-api-loader/-/js-api-loader-1.14.2.tgz#c07c7259d9b86e6ccf72a8426784dbee9dfa8e6b"
+  integrity sha512-Kx9mc4cRKsh122Rdd0v0987qjkwfqic0Go6j9W+KbRaM1GqQUG5UDiOLtZSQRfu0kB2Te+MV0OBa0gHeAg6GNA==
+  dependencies:
+    fast-deep-equal "^3.1.3"
+
+"@googlemaps/markerclusterer@^2.0.6":
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/@googlemaps/markerclusterer/-/markerclusterer-2.0.6.tgz#f3c157e24f5c95ab1748710c5a584ae1fae51d61"
+  integrity sha512-kO8Q77V3aqR2tVZ3SDXs9ycCiWYpd+FadxIJVtDKlO9LlMs415GS686+XvDLMLorR/RvwQHkquHZM8RbZ3bCrg==
+  dependencies:
+    fast-deep-equal "^3.1.3"
+    supercluster "^7.1.3"
+
 "@hapi/hoek@^9.0.0":
   version "9.3.0"
   resolved "https://registry.yarnpkg.com/@hapi/hoek/-/hoek-9.3.0.tgz#8368869dcb735be2e7f5cb7647de78e167a251fb"
@@ -1901,6 +1916,13 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
+"@zxing/browser@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@zxing/browser/-/browser-0.1.1.tgz#f5d6c0a57bda3b223539eadfa3d87c1260e0536f"
+  integrity sha512-fdcHrvvno1NnoiY5++kn/h2b9QnBNyqtK1JqbfY3dfmTdwyXCJr/aT2ZGyRcfe0D3I/THu1I5VJAcpoU0svQMQ==
+  optionalDependencies:
+    "@zxing/text-encoding" "^0.9.0"
+
 "@zxing/library@^0.19.1":
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/@zxing/library/-/library-0.19.1.tgz#68932436a9cf860e2148a6d6ae38fe1e27ea23a8"
@@ -1910,7 +1932,7 @@
   optionalDependencies:
     "@zxing/text-encoding" "~0.9.0"
 
-"@zxing/text-encoding@~0.9.0":
+"@zxing/text-encoding@^0.9.0", "@zxing/text-encoding@~0.9.0":
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/@zxing/text-encoding/-/text-encoding-0.9.0.tgz#fb50ffabc6c7c66a0c96b4c03e3d9be74864b70b"
   integrity sha512-U/4aVJ2mxI0aDNI8Uq0wEhMgY+u4CNtEb0om3+y3+niDAsoTCOB33UF0sxpzqzdqXLqmvc+vZyAt4O8pPdfkwA==
@@ -4454,6 +4476,11 @@ jsonpointer@^5.0.0:
   resolved "https://registry.yarnpkg.com/jsonpointer/-/jsonpointer-5.0.0.tgz#f802669a524ec4805fa7389eadbc9921d5dc8072"
   integrity sha512-PNYZIdMjVIvVgDSYKTT63Y+KZ6IZvGRNNWcxwD+GNnUz1MKPfv30J8ueCjdwcN0nDx2SlshgyB7Oy0epAzVRRg==
 
+kdbush@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/kdbush/-/kdbush-3.0.0.tgz#f8484794d47004cc2d85ed3a79353dbe0abc2bf0"
+  integrity sha512-hRkd6/XW4HTsA9vjVpY9tuXJYLSlelnkTmVFu4M9/7MIYQtFcHpbugAU7UbOfjOiVSVYl2fqgBuJ32JUmRo5Ew==
+
 kind-of@^6.0.2:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
@@ -6281,6 +6308,13 @@ stylehacks@^5.1.0:
     browserslist "^4.16.6"
     postcss-selector-parser "^6.0.4"
 
+supercluster@^7.1.3:
+  version "7.1.5"
+  resolved "https://registry.yarnpkg.com/supercluster/-/supercluster-7.1.5.tgz#65a6ce4a037a972767740614c19051b64b8be5a3"
+  integrity sha512-EulshI3pGUM66o6ZdH3ReiFcvHpM3vAigyK+vcxdjpJyEbIIrtbmBdY23mGgnI24uXiGFvrGq9Gkum/8U7vJWg==
+  dependencies:
+    kdbush "^3.0.0"
+
 supports-color@^5.3.0:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-5.5.0.tgz#e2e69a44ac8772f78a1ec0b35b689df6530efc8f"
@@ -6669,6 +6703,14 @@ vue-template-es2015-compiler@^1.9.0:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
+
+vue3-google-map@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/vue3-google-map/-/vue3-google-map-0.11.0.tgz#a45ba446bcdc05d4feb12518bd012e6a542e062e"
+  integrity sha512-+SqJvO6wYNw8db5wJdH+RU5e1wsk9Z+7kRj4aBqLaXmnM2Jf0rQbKJQ0SvYdfebXBTZMzGBIBrMz9UMGDb89Zg==
+  dependencies:
+    "@googlemaps/js-api-loader" "^1.12.11"
+    "@googlemaps/markerclusterer" "^2.0.6"
 
 vue@^3.2.13:
   version "3.2.33"

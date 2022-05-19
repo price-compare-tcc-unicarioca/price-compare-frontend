@@ -17,7 +17,7 @@ const getters = {
   isAuthenticated (state) {
     return state.token !== null && moment().isBefore(state.expirationDate)
   },
-  getUserInfo () {
+  getAuthenticatedUser () {
     return state.userInfo
   }
 }
@@ -60,12 +60,12 @@ const actions = {
       await client.post('/user/sign-up', payload)
 
       router.push({
-        name: 'home'
+        name: 'sign-in'
       })
     } catch (error) {
       context.commit('toast/addToast', {
         title: 'SignUp error',
-        payload: error.message
+        payload: error?.response?.data?.message || error.message
       }, {
         root: true
       })

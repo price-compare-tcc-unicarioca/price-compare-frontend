@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import authentication from './modules/authentication'
+import sale from './modules/sale'
 import toast from './modules/toast'
 
 const store = createStore({
@@ -13,6 +14,7 @@ const store = createStore({
   },
   modules: {
     authentication,
+    sale,
     toast
   }
 })
