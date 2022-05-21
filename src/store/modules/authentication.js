@@ -1,122 +1,69 @@
+import client from '@/clients/backend-api'
 import router from '@/router'
-import axios from 'axios'
-import moment from 'moment'
-
-const client = axios.create({
-  baseURL: 'http://127.0.0.1:8080/'
-})
 
 const state = {
-  accessToken: null,
-  expirationDate: null,
-  userInfo: null,
-  renewToken: null
+  authenticatedUser: localStorage.getItem('authenticated_user')
+    ? JSON.parse(localStorage.getItem('authenticated_user'))
+    : null
 }
 
 const getters = {
   isAuthenticated (state) {
-    return state.token !== null && moment().isBefore(state.expirationDate)
+    return state.authenticatedUser && client.isAuthenticated()
   },
   getAuthenticatedUser () {
-    return state.userInfo
+    return state.authenticatedUser
   }
 }
 
 const actions = {
   async signIn (context, { email, password }) {
     try {
-      const { data } = await client.post('/user/sign-in', {
-        email,
-        password
-      })
-
-      context.commit('setCredentials', data)
-      await context.dispatch('getUserInfo')
-
-      state.renewToken = setInterval(() => {
-        context.dispatch('renewCredentials')
-      }, 1000 * 60 * 1)
+      await client.signIn({ email, password })
+      context.commit('setAuthenticatedUser', await client.getCurrentUser())
 
       router.push({
         name: 'home'
       })
     } catch (error) {
-      if (context.state.accessToken) {
-        context.commit('eraseCredentials')
-      }
-
       context.commit('toast/addToast', {
-        title: 'SignUp error',
+        title: 'Error',
         payload: error?.response?.data?.message || error.message
       }, {
         root: true
       })
-
-      throw new Error(error?.response?.data?.message || error.message)
     }
   },
-  async signUp (context, payload) {
+  async signUp (context, { firstName, lastName, email, password }) {
     try {
-      await client.post('/user/sign-up', payload)
+      await client.signUp({
+        firstName,
+        lastName,
+        email,
+        password
+      })
 
       router.push({
         name: 'sign-in'
       })
     } catch (error) {
       context.commit('toast/addToast', {
-        title: 'SignUp error',
+        title: 'Error',
         payload: error?.response?.data?.message || error.message
       }, {
         root: true
       })
     }
   },
-  async signOut (context) {
-    context.commit('eraseCredentials')
-  },
-  async renewCredentials (context) {
-    try {
-      const { data } = await client.post('/user/renew', {}, {
-        headers: {
-          Authorization: `Bearer ${state.accessToken}`
-        }
-      })
-
-      context.commit('setCredentials', data)
-      await context.dispatch('getUserInfo')
-    } catch (error) {
-      if (context.state.accessToken) {
-        context.commit('eraseCredentials')
-      }
-    }
-  },
-  async getUserInfo () {
-    const { data } = await client.get('/user/current', {
-      headers: {
-        Authorization: `Bearer ${state.accessToken}`
-      }
-    })
-
-    state.userInfo = data
+  async signOut () {
+    client.signOut()
   }
 }
 
 const mutations = {
-  setCredentials (state, { token, expirationDate }) {
-    state.accessToken = token
-    state.expirationDate = moment(expirationDate)
-  },
-  eraseCredentials (state) {
-    state.accessToken = null
-    state.expirationDate = null
-    state.userInfo = null
-    if (state.renewToken) {
-      clearInterval(state.renewToken)
-    }
-
-    router.push({
-      name: 'sign-in'
-    })
+  setAuthenticatedUser (state, user) {
+    state.authenticatedUser = user
+    localStorage.setItem('authenticated_user', JSON.stringify(user))
   }
 }
 

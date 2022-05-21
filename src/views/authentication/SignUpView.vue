@@ -1,6 +1,13 @@
 <template>
   <div class="container">
-    <h2>Sign Up</h2>
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page">
+          <router-link :to="{name: 'sign-in'}" role="button">Sign in</router-link>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Sign up</li>
+      </ol>
+    </nav>
     <div class="row">
       <div class="col-sm-6">
         <in-cart-input

@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-sm bg-light mb-3">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
     <div class="container-fluid">
       <router-link to="/" class="navbar-brand">
         InCart
@@ -10,23 +10,23 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <router-link :to="{name: 'home'}" class="nav-link" active-class="active">
-            <font-awesome-icon icon="house" fixedWidth="true" />
+            <font-awesome-icon icon="house" :fixedWidth="true" />
             Home
           </router-link>
           <router-link :to="{name: 'list-companies'}" class="nav-link" active-class="active" v-if="isAuthenticated">
-            <font-awesome-icon icon="cart-shopping" fixedWidth="true" />
+            <font-awesome-icon icon="cart-shopping" :fixedWidth="true" />
             Supermarkets
           </router-link>
           <router-link :to="{name: 'import-sheet'}" class="nav-link" active-class="active" v-if="isAuthenticated">
-            <font-awesome-icon icon="file-import" fixedWidth="true" />
+            <font-awesome-icon icon="file-import" :fixedWidth="true" />
             Import Sheet
           </router-link>
           <a class="nav-link" v-if="isAuthenticated" @click="signOut">
-            <font-awesome-icon icon="right-from-bracket" fixedWidth="true" />
+            <font-awesome-icon icon="right-from-bracket" :fixedWidth="true" />
             Sign out
           </a>
           <router-link v-else :to="{name: 'sign-in'}" class="nav-link" active-class="active">
-            <font-awesome-icon icon="right-to-bracket" fixedWidth="true" />
+            <font-awesome-icon icon="right-to-bracket" :fixedWidth="true" />
             Sign in
           </router-link>
         </div>

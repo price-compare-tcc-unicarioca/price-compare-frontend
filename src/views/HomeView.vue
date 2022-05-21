@@ -1,6 +1,11 @@
 <template>
   <div class="container">
-    <h2>Price compare</h2>
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">Home</li>
+        <li class="breadcrumb-item active" aria-current="page">Price Compare</li>
+      </ol>
+    </nav>
     <in-cart-input label="EAN" v-model="ean" />
     <div class="row">
       <div class="col-sm-4 d-grid mt-2" v-if="canUseCamera">
@@ -14,7 +19,7 @@
         </button>
       </div>
     </div>
-    <table class="table table-striped mt-3" v-if="salesNear">
+    <table class="table table-striped mt-3" v-if="nearSales">
       <thead>
         <tr class="text-center">
           <th scope="col">Product</th>
@@ -24,9 +29,9 @@
         </tr>
       </thead>
       <tbody class="table-group-divider">
-        <tr class="text-center" v-for="({ company, price }) in salesNear?.sales" :key="company.id">
-          <td >{{ salesNear.product?.name }}</td>
-          <td >{{ salesNear.product?.ean }}</td>
+        <tr class="text-center" v-for="({ company, price }) in nearSales?.sales" :key="company.id">
+          <td >{{ nearSales.product?.name }}</td>
+          <td >{{ nearSales.product?.ean }}</td>
           <td >
             <a @click="showCompanyDetail(company)" class="table-link">
               {{ company.name }}
@@ -36,7 +41,7 @@
         </tr>
       </tbody>
     </table>
-    <in-cart-modal id="barcode-scanner-modal" v-model="showCamera">
+    <in-cart-modal id="barcode-scanner-modal" ref="barcodeScannerModal">
       <template #title>
         <font-awesome-icon icon="barcode" /> Barcode Scanner
       </template>
@@ -44,7 +49,7 @@
         <ean-reader-container @ean-decoded="onEanFound" />
       </template>
     </in-cart-modal>
-    <in-cart-modal id="company-detail-modal" class="modal-lg" v-model="showCompanyModal">
+    <in-cart-modal id="company-detail-modal" class="modal-lg" ref="companyDetailModal">
       <template #title>
         <font-awesome-icon icon="map-location-dot" /> Supermarket Location
       </template>
@@ -69,13 +74,13 @@
 </template>
 
 <script>
-import { computed, onBeforeUnmount, ref } from 'vue-demi'
+import client from '@/clients/backend-api'
+import { onBeforeUnmount, ref } from 'vue-demi'
 import { GoogleMap, Marker } from 'vue3-google-map'
 
 import InCartInput from '@/components/InCartInput.vue'
 import InCartModal from '@/components/InCartModal.vue'
 import EanReaderContainer from '@/components/EanReaderContainer.vue'
-import { useStore } from 'vuex'
 
 export default {
   components: {
@@ -86,47 +91,69 @@ export default {
     InCartModal
   },
   setup () {
-    const store = useStore()
-
-    const ean = ref(null)
-    const canUseCamera = ref(navigator && navigator.mediaDevices)
-    const showCamera = ref(false)
-    const currentPosition = ref(null)
-
     const formatter = new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL'
     })
 
+    const ean = ref(null)
+    const canUseCamera = ref(navigator && navigator.mediaDevices)
+    const barcodeScannerModal = ref(null)
+    const currentPosition = ref(null)
+    const nearSales = ref(null)
+
     const toggleCamera = () => {
-      showCamera.value = !showCamera.value
+      barcodeScannerModal?.value?.toggle()
     }
 
     const onEanFound = (decodedEan) => {
       ean.value = decodedEan
-      showCamera.value = false
+      barcodeScannerModal?.value?.toggle()
       onSearchRequest()
     }
 
     const selectedCompany = ref(null)
-    const showCompanyModal = ref(false)
+    const companyDetailModal = ref(null)
     const showCompanyDetail = (company) => {
       selectedCompany.value = company
-      showCompanyModal.value = true
+      companyDetailModal.value?.toggle()
     }
 
-    const onSearchRequest = () => {
+    const onSearchRequest = async () => {
       const { longitude, latitude } = currentPosition.value?.coords
 
-      store.dispatch('sale/searchNear', {
+      const nearSalesFound = await client.searchSales({
         ean: ean.value,
         longitude,
         latitude
       })
+
+      const { product, sales } = nearSalesFound
+      nearSales.value = {
+        product,
+        sales: sales?.map((sale) => {
+          const { company, price } = sale
+
+          return {
+            company: {
+              ...company,
+              maps: {
+                position: {
+                  lat: company.point.y,
+                  lng: company.point.x
+                },
+                title: company.name,
+                animation: 2,
+                optimized: true
+              }
+            },
+            price: formatter.format(price)
+          }
+        })
+      }
     }
 
     const positionWatcher = navigator.geolocation.watchPosition((position) => {
-      console.log(position)
       currentPosition.value = position
     })
 
@@ -136,44 +163,15 @@ export default {
 
     return {
       ean,
-      salesNear: computed(() => {
-        if (!store.state.sale?.salesNear) {
-          return null
-        }
-
-        const { product, sales } = store.state.sale.salesNear
-
-        return {
-          product,
-          sales: sales?.map((sale) => {
-            const { company, price } = sale
-            if (company) {
-              company.maps = {
-                position: {
-                  lat: company.point.y,
-                  lng: company.point.x
-                },
-                title: company.name,
-                animation: 2,
-                optimized: true
-              }
-            }
-
-            return {
-              company,
-              price: formatter.format(price)
-            }
-          })
-        }
-      }),
+      nearSales,
       canUseCamera,
       selectedCompany,
       toggleCamera,
-      showCamera,
+      barcodeScannerModal,
       onEanFound,
       onSearchRequest,
       showCompanyDetail,
-      showCompanyModal
+      companyDetailModal
     }
   }
 }

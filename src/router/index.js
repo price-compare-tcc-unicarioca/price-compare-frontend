@@ -1,8 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
 import HomeView from '../views/HomeView.vue'
-import SignInView from '../views/SignInView.vue'
-import SignUpView from '../views/SignUpView.vue'
+
+import ListCompaniesView from '../views/company/ListView.vue'
+import CreateCompanyView from '../views/company/CreateView.vue'
+
+import ImportSheetView from '../views/company/ImportSheetView.vue'
+import SignInView from '../views/authentication/SignInView.vue'
+import SignUpView from '../views/authentication/SignUpView.vue'
 
 const routes = [
   {
@@ -32,25 +37,23 @@ const routes = [
   {
     path: '/company',
     name: 'list-companies',
-    component: HomeView,
+    component: ListCompaniesView,
     meta: {
       requiresAuth: true
-    },
-    children: [
-      {
-        path: 'add',
-        name: 'add-company',
-        component: HomeView,
-        meta: {
-          requiresAuth: true
-        }
-      }
-    ]
+    }
+  },
+  {
+    path: '/company/add',
+    name: 'add-company',
+    component: CreateCompanyView,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/import-sheet',
     name: 'import-sheet',
-    component: HomeView,
+    component: ImportSheetView,
     meta: {
       requiresAuth: true
     }

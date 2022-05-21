@@ -1,13 +1,14 @@
 <template>
   <div class="ean-reader-container">
     <ean-reader :deviceId="selectedDevice" @devices-found="onDevicesFound" @decoded="onDecoded" />
-    <div v-if="devices.length > 1">
+    <div class="form-floating" v-if="devices.length > 1">
       <select id="device-selector" class="form-select mt-3" v-model="selectedDevice">
         <option value="">Default</option>
         <option v-for="({ deviceId, label }) in devices" :key="deviceId" :value="deviceId">
           {{ label }}
         </option>
       </select>
+      <label for="device-selector">Camera</label>
     </div>
   </div>
 </template>

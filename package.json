@@ -18,6 +18,7 @@
     "axios": "^0.27.2",
     "bootstrap": "5.2.0-beta1",
     "core-js": "^3.8.3",
+    "maska": "^1.5.0",
     "moment": "^2.29.3",
     "moment-timezone": "^0.5.34",
     "register-service-worker": "^1.7.2",

@@ -1,6 +1,10 @@
 <template>
   <div class="container">
-    <h2>Sign In</h2>
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Sign in</li>
+      </ol>
+    </nav>
     <form id="sign-in-form" class="vertical-middle" @submit="signIn">
       <in-cart-input
         class="mb-3"

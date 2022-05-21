@@ -9,7 +9,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <slot v-if="modelValue"></slot>
+          <slot v-if="isOpen"></slot>
         </div>
       </div>
     </div>
@@ -17,35 +17,52 @@
 </template>
 
 <script>
-import { onMounted, ref, watch } from 'vue-demi'
 import { Modal } from 'bootstrap'
+import { onMounted, ref } from 'vue-demi'
 
 export default {
   props: {
-    id: String,
-    modelValue: Boolean
+    id: String
   },
   setup (props, { emit }) {
     const modal = ref(null)
+    const isOpen = ref(false)
+    const bootstrapModal = ref(null)
+
+    const show = () => {
+      bootstrapModal.value?.show()
+    }
+
+    const hide = () => {
+      bootstrapModal.value?.hide()
+    }
+
+    const toggle = () => {
+      bootstrapModal.value?.toggle()
+    }
 
     onMounted(() => {
-      const bsModal = new Modal(modal.value, {
+      bootstrapModal.value = new Modal(modal.value, {
         keyboard: false
       })
 
-      watch(() => props.modelValue, (value) => {
-        value
-          ? bsModal.show()
-          : bsModal.hide()
+      modal.value.addEventListener('shown.bs.modal', () => {
+        isOpen.value = true
+        emit('opened')
       })
 
       modal.value.addEventListener('hidden.bs.modal', () => {
-        emit('update:modelValue', false)
+        isOpen.value = false
+        emit('closed')
       })
     })
 
     return {
-      modal
+      modal,
+      isOpen,
+      show,
+      hide,
+      toggle
     }
   }
 }
