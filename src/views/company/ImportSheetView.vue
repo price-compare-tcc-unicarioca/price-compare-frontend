@@ -28,22 +28,24 @@
     </form>
     <div v-if="importedSales.length > 0">
       <h3>Imported items</h3>
-      <table class="table table-striped align-middle">
-        <thead>
-          <tr class="text-center">
-            <th>EAN</th>
-            <th>Name</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody class="table-group-divider">
-          <tr class="text-center" v-for="(sale) in importedSales" :key="sale.ean">
-            <td>{{sale.ean}}</td>
-            <td>{{sale.name}}</td>
-            <td>{{sale.price}}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr class="text-center">
+              <th>EAN</th>
+              <th>Name</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+            <tr class="text-center" v-for="(sale) in importedSales" :key="sale.ean">
+              <td>{{sale.ean}}</td>
+              <td>{{sale.name}}</td>
+              <td>{{sale.price}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>

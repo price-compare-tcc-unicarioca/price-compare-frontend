@@ -18,6 +18,8 @@ export class Client {
     if (localStorage.getItem('access_token')) {
       const credentials = JSON.parse(localStorage.getItem('access_token'))
       this.accessToken = new AccessToken(credentials.token, moment(credentials.expirationDate))
+    } else {
+      this.accessToken = null
     }
 
     this.client = axios.create({
@@ -49,6 +51,24 @@ export class Client {
     const { data } = await this.client.post('/auth/sign-in', {
       email,
       password
+    })
+
+    const { token, expirationDate } = data
+
+    this.accessToken = new AccessToken(token, expirationDate)
+    localStorage.setItem('access_token', JSON.stringify({
+      token,
+      expirationDate
+    }))
+
+    setInterval(() => this.renewToken(), 1000 * 60 * 10)
+  }
+
+  async renewToken () {
+    const { data } = await this.client.post('/auth/renew', {}, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken.token}`
+      }
     })
 
     const { token, expirationDate } = data

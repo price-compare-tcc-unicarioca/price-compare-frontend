@@ -19,28 +19,30 @@
         </button>
       </div>
     </div>
-    <table class="table table-striped mt-3" v-if="nearSales">
-      <thead>
-        <tr class="text-center">
-          <th scope="col">Product</th>
-          <th scope="col">EAN</th>
-          <th scope="col">Supermarket</th>
-          <th scope="col">Price</th>
-        </tr>
-      </thead>
-      <tbody class="table-group-divider">
-        <tr class="text-center" v-for="({ company, price }) in nearSales?.sales" :key="company.id">
-          <td >{{ nearSales.product?.name }}</td>
-          <td >{{ nearSales.product?.ean }}</td>
-          <td >
-            <a @click="showCompanyDetail(company)" class="table-link">
-              {{ company.name }}
-            </a>
-          </td>
-          <td >{{ price }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-striped mt-3" v-if="nearSales">
+        <thead>
+          <tr class="text-center">
+            <th scope="col">Product</th>
+            <th scope="col">EAN</th>
+            <th scope="col">Supermarket</th>
+            <th scope="col">Price</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider">
+          <tr class="text-center" v-for="({ company, price }) in nearSales?.sales" :key="company.id">
+            <td >{{ nearSales.product?.name }}</td>
+            <td >{{ nearSales.product?.ean }}</td>
+            <td >
+              <a @click="showCompanyDetail(company)" class="table-link">
+                {{ company.name }}
+              </a>
+            </td>
+            <td >{{ price }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <in-cart-modal id="barcode-scanner-modal" ref="barcodeScannerModal">
       <template #title>
         <font-awesome-icon icon="barcode" /> Barcode Scanner
