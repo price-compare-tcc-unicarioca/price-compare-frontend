@@ -3,6 +3,7 @@ module.exports = defineConfig({
   devServer: {
     https: false
   },
+  publicPath: '',
   pwa: {
     name: 'InCart',
     themeColor: '#4DBA87',
