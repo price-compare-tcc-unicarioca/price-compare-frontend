@@ -6,10 +6,14 @@ module.exports = defineConfig({
   publicPath: '/price-compare-frontend/',
   pwa: {
     name: 'InCart',
-    themeColor: '#4DBA87',
+    themeColor: '#0D6EFD',
     msTileColor: '#0D6EFD',
     appleMobileWebAppCapable: 'yes',
-    appleMobileWebAppStatusBarStyle: 'black'
+    appleMobileWebAppStatusBarStyle: 'black',
+    manifestOptions: {
+      background_color: '#FFFFFF',
+      display: 'fullscreen'
+    }
   },
   transpileDependencies: true
 })

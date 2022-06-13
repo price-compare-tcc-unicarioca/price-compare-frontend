@@ -6,17 +6,22 @@
         <li class="breadcrumb-item active" aria-current="page">Price Compare</li>
       </ol>
     </nav>
-    <in-cart-input label="EAN" v-model="ean" />
-    <div class="row">
-      <div class="col-sm-4 d-grid mt-2" v-if="canUseCamera">
-        <button class="btn btn-outline-secondary btn-lg" type="button" @click="toggleCamera">
-          <font-awesome-icon icon="barcode" /> Scan Barcode
-        </button>
-      </div>
-      <div :class="['d-grid', 'mt-2', {'col-sm-8': canUseCamera, 'col': !canUseCamera}]">
-        <button class="btn btn-outline-primary btn-lg" type="button" @click="onSearchRequest" :disabled="!ean">
-          <font-awesome-icon icon="magnifying-glass" /> Search Sale
-        </button>
+    <div class="alert alert-danger" role="alert" v-if="geolocationError">
+      <strong>{{ geolocationError }}.</strong> This application cannot work without the current geolocation position.
+    </div>
+    <div v-else>
+      <in-cart-input label="EAN" v-model="ean" />
+      <div class="row">
+        <div class="col-sm-4 d-grid mt-2" v-if="canUseCamera">
+          <button class="btn btn-outline-secondary btn-lg" type="button" @click="toggleCamera">
+            <font-awesome-icon icon="barcode" /> Scan Barcode
+          </button>
+        </div>
+        <div :class="['d-grid', 'mt-2', {'col-sm-8': canUseCamera, 'col': !canUseCamera}]">
+          <button class="btn btn-outline-primary btn-lg" type="button" @click="onSearchRequest" :disabled="!ean">
+            <font-awesome-icon icon="magnifying-glass" /> Search Sale
+          </button>
+        </div>
       </div>
     </div>
     <div class="table-responsive">
@@ -99,10 +104,18 @@ export default {
     })
 
     const ean = ref(null)
-    const canUseCamera = ref(navigator && navigator.mediaDevices)
+    const canUseCamera = ref(false)
     const barcodeScannerModal = ref(null)
     const currentPosition = ref(null)
     const nearSales = ref(null)
+
+    navigator.mediaDevices.getUserMedia({
+      video: true
+    }).then(() => {
+      canUseCamera.value = true
+    }).catch(() => {
+      canUseCamera.value = false
+    })
 
     const toggleCamera = () => {
       barcodeScannerModal?.value?.toggle()
@@ -155,8 +168,13 @@ export default {
       }
     }
 
+    const geolocationError = ref(null)
     const positionWatcher = navigator.geolocation.watchPosition((position) => {
+      geolocationError.value = null
       currentPosition.value = position
+    }, ({ message }) => {
+      geolocationError.value = message
+      currentPosition.value = null
     })
 
     onBeforeUnmount(() => {
@@ -167,6 +185,7 @@ export default {
       ean,
       nearSales,
       canUseCamera,
+      geolocationError,
       selectedCompany,
       toggleCamera,
       barcodeScannerModal,
