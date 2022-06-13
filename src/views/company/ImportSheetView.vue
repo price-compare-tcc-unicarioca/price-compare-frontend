@@ -27,7 +27,7 @@
       </div>
     </form>
     <div v-if="importedSheet">
-      <h3>Imported items</h3>
+      <h3 class="mt-3 mt-md-0">Imported items</h3>
       <p><strong>Name:</strong> {{ importedSheet?.company?.name }}</p>
       <p><strong>CNPJ:</strong> {{ importedSheet?.company?.document }}</p>
       <div class="table-responsive">

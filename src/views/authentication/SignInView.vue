@@ -20,9 +20,6 @@
         :validation="v$.password" />
 
       <div class="mt-2 text-end">
-          <router-link to="/sign-up" class="btn btn-light" role="button">
-            Sign Up
-          </router-link>
           <button type="submit" class="btn btn-primary" :disabled="v$.$invalid">
             Login
           </button>

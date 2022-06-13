@@ -44,10 +44,16 @@
               </li>
             </ul>
           </li>
-          <li class="navbar-item" v-else>
+          <li class="navbar-item" v-if="!isAuthenticated">
             <router-link :to="{name: 'sign-in'}" class="nav-link" active-class="active">
               <font-awesome-icon icon="right-to-bracket" :fixedWidth="true" />
               Sign in
+            </router-link>
+          </li>
+          <li class="navbar-item" v-if="!isAuthenticated">
+            <router-link :to="{name: 'sign-up'}" class="nav-link btn-outline-light" active-class="active">
+              <font-awesome-icon icon="user-plus" :fixedWidth="true" />
+              Sign up
             </router-link>
           </li>
         </ul>

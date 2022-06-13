@@ -52,7 +52,6 @@
       </div>
     </div>
     <div class="mt-2 text-end">
-      <router-link to="/sign-in" class="btn" role="button">Login</router-link>
       <button class="btn btn-secondary" type="button" :disabled="v$.$invalid" @click="signup">Sign Up</button>
     </div>
   </div>
