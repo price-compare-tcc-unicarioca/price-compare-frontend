@@ -26,8 +26,10 @@
         </button>
       </div>
     </form>
-    <div v-if="importedSales.length > 0">
+    <div v-if="importedSheet">
       <h3>Imported items</h3>
+      <p><strong>Name:</strong> {{ importedSheet?.company?.name }}</p>
+      <p><strong>CNPJ:</strong> {{ importedSheet?.company?.document }}</p>
       <div class="table-responsive">
         <table class="table table-striped align-middle">
           <thead>
@@ -38,7 +40,7 @@
             </tr>
           </thead>
           <tbody class="table-group-divider">
-            <tr class="text-center" v-for="(sale) in importedSales" :key="sale.ean">
+            <tr class="text-center" v-for="(sale) in importedSheet?.sales" :key="sale.ean">
               <td>{{sale.ean}}</td>
               <td>{{sale.name}}</td>
               <td>{{sale.price}}</td>
@@ -58,7 +60,7 @@ export default {
   setup () {
     const store = useStore()
     const file = ref(null)
-    const importedSales = ref([])
+    const importedSheet = ref(null)
     const formatter = new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL'
@@ -91,14 +93,17 @@ export default {
           name,
           contentType,
           base64
-        }).then((sales) => {
-          importedSales.value = sales.map((sale) => {
-            return {
-              ean: sale.product.ean,
-              name: sale.product.name,
-              price: formatter.format(sale.price)
-            }
-          })
+        }).then(({ company, sales }) => {
+          importedSheet.value = {
+            company,
+            sales: sales?.map((sale) => {
+              return {
+                ean: sale.product.ean,
+                name: sale.product.name,
+                price: formatter.format(sale.price)
+              }
+            })
+          }
 
           store.commit('toast/addToast', {
             title: 'Sheet imported',
@@ -115,7 +120,7 @@ export default {
 
     return {
       file,
-      importedSales,
+      importedSheet,
       onFileSelected,
       onSubmit
     }

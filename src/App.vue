@@ -35,7 +35,7 @@
               <font-awesome-icon icon="user" :fixedWidth="true" />
               {{ authenticatedUser.firstName }} {{ authenticatedUser.lastName }}
             </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarUserDropdown">
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
               <li>
                 <a class="dropdown-item" href="#" @click="signOut">
                   <font-awesome-icon icon="right-from-bracket" :fixedWidth="true" />

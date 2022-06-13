@@ -23,7 +23,7 @@ export class Client {
     }
 
     this.client = axios.create({
-      baseURL: 'https://incart-tcc-demo.herokuapp.com/'
+      baseURL: process.env.VUE_APP_INCART_API_URI
     })
   }
 
