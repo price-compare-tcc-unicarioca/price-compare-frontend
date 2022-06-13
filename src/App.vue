@@ -8,29 +8,49 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <router-link :to="{name: 'home'}" class="nav-link" active-class="active">
-            <font-awesome-icon icon="house" :fixedWidth="true" />
-            Home
-          </router-link>
-          <router-link :to="{name: 'list-companies'}" class="nav-link" active-class="active" v-if="isAuthenticated">
-            <font-awesome-icon icon="cart-shopping" :fixedWidth="true" />
-            Supermarkets
-          </router-link>
-          <router-link :to="{name: 'import-sheet'}" class="nav-link" active-class="active" v-if="isAuthenticated">
-            <font-awesome-icon icon="file-import" :fixedWidth="true" />
-            Import Sheet
-          </router-link>
-          <a class="nav-link" v-if="isAuthenticated" @click="signOut">
-            <font-awesome-icon icon="right-from-bracket" :fixedWidth="true" />
-            Sign out
-          </a>
-          <router-link v-else :to="{name: 'sign-in'}" class="nav-link" active-class="active">
-            <font-awesome-icon icon="right-to-bracket" :fixedWidth="true" />
-            Sign in
-          </router-link>
-        </div>
+      <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <router-link :to="{name: 'home'}" class="nav-link" active-class="active">
+              <font-awesome-icon icon="house" :fixedWidth="true" />
+              Home
+            </router-link>
+          </li>
+          <li class="nav-item" v-if="isAuthenticated">
+            <router-link :to="{name: 'list-companies'}" class="nav-link" active-class="active">
+              <font-awesome-icon icon="cart-shopping" :fixedWidth="true" />
+              Supermarkets
+            </router-link>
+          </li>
+          <li class="nav-item" v-if="isAuthenticated">
+            <router-link :to="{name: 'import-sheet'}" class="nav-link" active-class="active">
+              <font-awesome-icon icon="file-import" :fixedWidth="true" />
+              Import Sheet
+            </router-link>
+          </li>
+        </ul>
+        <ul class="navbar-nav">
+          <li class="navbar-item dropdown" v-if="isAuthenticated">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <font-awesome-icon icon="user" :fixedWidth="true" />
+              {{ authenticatedUser.firstName }} {{ authenticatedUser.lastName }}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarUserDropdown">
+              <li>
+                <a class="dropdown-item" href="#" @click="signOut">
+                  <font-awesome-icon icon="right-from-bracket" :fixedWidth="true" />
+                  Signout
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="navbar-item" v-else>
+            <router-link :to="{name: 'sign-in'}" class="nav-link" active-class="active">
+              <font-awesome-icon icon="right-to-bracket" :fixedWidth="true" />
+              Sign in
+            </router-link>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
@@ -53,8 +73,10 @@ export default {
     const signOut = () => {
       store.dispatch('authentication/signOut')
     }
+
     return {
       isAuthenticated: computed(() => store.getters['authentication/isAuthenticated']),
+      authenticatedUser: computed(() => store.getters['authentication/getAuthenticatedUser']),
       signOut
     }
   }

@@ -65,7 +65,7 @@ export default {
 
       await client.deleteCompany({ id })
 
-      companies.value = companies.value.splice(idx, 1)
+      companies.value.splice(idx, 1)
       store.commit('toast/addToast', {
         title: 'Successfully removed',
         payload: `Supermarket ${name} successfully removed`

@@ -1,11 +1,10 @@
 <template>
-  <div :class="['toast', {show}]" role="alert" aria-live="assertlive" aria-atomic="true">
-    <div class="toast-header">
-      <strong class="me-auto">{{ title }}</strong>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" @click="close"></button>
-    </div>
-    <div class="toast-body">
-      <slot></slot>
+  <div :class="['toast', 'align-items-center', 'text-bg-warning', 'border-0', {show}]" role="alert" aria-live="assertlive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        <slot></slot>
+      </div>
+      <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close" @click="close"></button>
     </div>
   </div>
 </template>
@@ -15,12 +14,6 @@ import { onMounted, ref } from 'vue-demi'
 
 export default {
   name: 'SimpleToast',
-  props: {
-    title: {
-      type: String,
-      default: 'Info'
-    }
-  },
   setup (props, { emit }) {
     const show = ref(true)
     const close = () => {

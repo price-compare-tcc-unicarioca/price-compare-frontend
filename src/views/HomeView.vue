@@ -88,6 +88,7 @@ import { GoogleMap, Marker } from 'vue3-google-map'
 import InCartInput from '@/components/InCartInput.vue'
 import InCartModal from '@/components/InCartModal.vue'
 import EanReaderContainer from '@/components/EanReaderContainer.vue'
+import { useStore } from 'vuex'
 
 export default {
   components: {
@@ -98,21 +99,25 @@ export default {
     InCartModal
   },
   setup () {
+    const store = useStore()
     const formatter = new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL'
     })
 
     const ean = ref(null)
-    const canUseCamera = ref(false)
+    const canUseCamera = ref(true)
     const barcodeScannerModal = ref(null)
     const currentPosition = ref(null)
     const nearSales = ref(null)
 
     navigator.mediaDevices.getUserMedia({
       video: true
-    }).then(() => {
+    }).then((stream) => {
       canUseCamera.value = true
+      stream.getTracks().forEach((track) => {
+        track.stop()
+      })
     }).catch(() => {
       canUseCamera.value = false
     })
@@ -137,33 +142,40 @@ export default {
     const onSearchRequest = async () => {
       const { longitude, latitude } = currentPosition.value?.coords
 
-      const nearSalesFound = await client.searchSales({
-        ean: ean.value,
-        longitude,
-        latitude
-      })
+      try {
+        const nearSalesFound = await client.searchSales({
+          ean: ean.value,
+          longitude,
+          latitude
+        })
 
-      const { product, sales } = nearSalesFound
-      nearSales.value = {
-        product,
-        sales: sales?.map((sale) => {
-          const { company, price } = sale
+        const { product, sales } = nearSalesFound
+        nearSales.value = {
+          product,
+          sales: sales?.map((sale) => {
+            const { company, price } = sale
 
-          return {
-            company: {
-              ...company,
-              maps: {
-                position: {
-                  lat: company.point.y,
-                  lng: company.point.x
-                },
-                title: company.name,
-                animation: 2,
-                optimized: true
-              }
-            },
-            price: formatter.format(price)
-          }
+            return {
+              company: {
+                ...company,
+                maps: {
+                  position: {
+                    lat: company.point.y,
+                    lng: company.point.x
+                  },
+                  title: company.name,
+                  animation: 2,
+                  optimized: true
+                }
+              },
+              price: formatter.format(price)
+            }
+          })
+        }
+      } catch ({ message }) {
+        store.commit('toast/addToast', {
+          title: '',
+          payload: message
         })
       }
     }

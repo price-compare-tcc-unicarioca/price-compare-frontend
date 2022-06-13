@@ -55,8 +55,13 @@ const actions = {
       })
     }
   },
-  async signOut () {
+  async signOut (context) {
     client.signOut()
+    context.commit('setAuthenticatedUser', null)
+
+    router.push({
+      name: 'home'
+    })
   }
 }
 
