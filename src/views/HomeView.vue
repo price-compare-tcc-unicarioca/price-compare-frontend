@@ -14,7 +14,7 @@
         </button>
       </div>
       <div :class="['d-grid', 'mt-2', {'col-sm-8': canUseCamera, 'col': !canUseCamera}]">
-        <button class="btn btn-outline-primary btn-lg" type="button" @click="onSearchRequest">
+        <button class="btn btn-outline-primary btn-lg" type="button" @click="onSearchRequest" :disabled="!ean">
           <font-awesome-icon icon="magnifying-glass" /> Search Sale
         </button>
       </div>

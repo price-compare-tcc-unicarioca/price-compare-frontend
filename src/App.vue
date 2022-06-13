@@ -1,4 +1,5 @@
 <template>
+  <app-promoter />
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
     <div class="container-fluid">
       <router-link to="/" class="navbar-brand">
@@ -39,18 +40,19 @@
 
 <script>
 import ToastContainer from '@/components/ToastContainer.vue'
+import AppPromoter from '@/components/AppPromoter.vue'
 import { useStore } from 'vuex'
 import { computed } from 'vue-demi'
 export default {
   components: {
-    ToastContainer
+    ToastContainer,
+    AppPromoter
   },
   setup () {
     const store = useStore()
     const signOut = () => {
       store.dispatch('authentication/signOut')
     }
-
     return {
       isAuthenticated: computed(() => store.getters['authentication/isAuthenticated']),
       signOut
