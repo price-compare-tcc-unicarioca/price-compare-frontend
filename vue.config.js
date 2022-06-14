@@ -11,8 +11,7 @@ module.exports = defineConfig({
     appleMobileWebAppCapable: 'yes',
     appleMobileWebAppStatusBarStyle: 'black',
     manifestOptions: {
-      background_color: '#FFFFFF',
-      display: 'fullscreen'
+      background_color: '#FFFFFF'
     }
   },
   transpileDependencies: true
